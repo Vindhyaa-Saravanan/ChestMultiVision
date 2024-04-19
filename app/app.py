@@ -4,6 +4,7 @@ import tensorflow as tf
 from PIL import Image
 import numpy as np
 import keras
+from pathlib import Path
 
 # Referred to tutorial by Kaushal Shah
 # Accessed at https://kaushal28.github.io/Building-Multi-Output-CNN-with-Keras/
@@ -40,7 +41,9 @@ def create_mobilenet_model():
 
 # Load the saved TensorFlow/Keras model for 2D data
 model = create_mobilenet_model()
-model.load_weights("mobilenet_finetuned.weights.h5", skip_mismatch=False)
+path = Path(__file__).parent / "mobilenet_finetuned.weights.h5"
+st.write(path)
+model.load_weights(path, skip_mismatch=False)
 
 # Streamlit app
 st.title('Medical Image Classification App')
