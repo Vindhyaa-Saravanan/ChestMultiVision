@@ -4,28 +4,25 @@ import tensorflow as tf
 from PIL import Image
 import numpy as np
 import keras
-from pathlib import Path
+import pandas as pd
 
 # Referred to tutorial by Kaushal Shah
 # Accessed at https://kaushal28.github.io/Building-Multi-Output-CNN-with-Keras/
 # Refer https://keras.io/api/applications/mobilenet/ for specifics of MobileNetV2.
 
-def create_mobilenet_model():
+def create_resnet_model():
     # Input layer
     model_input = keras.layers.Input(shape=(512, 512, 3))
 
-    # Define MobileNetV2 base model
-    base_model = keras.applications.MobileNetV2(input_shape=(512, 512, 3), include_top=False, weights=None, pooling='avg')
+    # Define ResNet50V2 base model
+    base_model = keras.applications.ResNet50V2(input_shape=(512, 512, 3), include_top=False, weights=None, pooling='avg')
 
     # Pass preprocessed input through base model
     base_model_output = base_model(model_input)
 
     # Fully connected layers
-    x = keras.layers.Dense(512, activation='relu')(base_model_output)
-    x = keras.layers.Dropout(0.5)(x)
-    x = keras.layers.Dense(128, activation='relu')(x)
-    x = keras.layers.Dropout(0.5)(x)
-    x = keras.layers.Dense(32, activation='relu')(x)
+    x = keras.layers.Dropout(0.5)(base_model_output)
+    x = keras.layers.Dense(512, activation='relu')(x)
     x = keras.layers.Dropout(0.5)(x)
 
     # Output layers for each label
@@ -35,31 +32,60 @@ def create_mobilenet_model():
         output_layers.append(output_layer)
 
     # Define model with multiple outputs
-    mobilenet_model = keras.models.Model(inputs=model_input, outputs=output_layers)
+    resnet_model = keras.models.Model(inputs=model_input, outputs=output_layers)
 
-    return mobilenet_model
+    return resnet_model
 
 # Load the saved TensorFlow/Keras model for 2D data
-model = create_mobilenet_model()
-path = Path(__file__).parent / "mobilenet_finetuned.weights.h5"
-st.write(path)
-model.load_weights(path, skip_mismatch=False)
+model = create_resnet_model()
+model.load_weights("ResNet50V2_finetuned.weights.h5", skip_mismatch=False)
 
 # Streamlit app
-st.title('Medical Image Classification App')
+st.title('ChestMultiVision: Chest X-ray MultiLabel Classification App')
+
+# Sidebar for additional model information
+with st.sidebar:
+    st.markdown("<style>h2 {font-size: 16px;}, p {font-size: 10px;}</style>", unsafe_allow_html=True)  # Reduce font size
+    st.markdown("Product Disclaimer: ChestMultiVision is a prototype chest x ray classification app, it is NOT A MEDICAL DEVICE. Predictions made are simply to demonstrate the application and the application is not approved for medical use.")
+    
+    st.markdown("#### About ChestMultiVision")
+    st.markdown("ChestMultiVision harnesses a custom deep learning model based on the ResNet50V2 architecture. It was trained on the Chest X-ray-14 dataset. It predicts six different findings detectable on chest x-rays, that are: Atelectasis, Effusion, Infiltration, Mass, No Finding, and Nodule.")
 
 # Upload an image for classification
-uploaded_file = st.file_uploader("Choose a medical image...", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("Upload a chest x-ray image, to receive image-level predictions for the six findings...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    # Preprocess the uploaded image
-    image = Image.open(uploaded_file).convert('L')  # Convert to grayscale
-    image = image.resize((512, 512))  # Resize to match the model input size
+    try:
+        # Preprocess the uploaded image
+        image = Image.open(uploaded_file).convert('L')  # Convert to grayscale
+        image = image.resize((512, 512))  # Resize to match the model input size
 
-    # Use the TensorFlow/Keras model for predictions
-    image_array = np.array(image)  # Normalize pixel values
-    image_array = np.expand_dims(image_array, axis=-1)  # Add a channel dimension
-    rgb_data = np.stack((image_array.reshape(512,512), ) * 3, axis=-1)
-    rgb_data = tf.keras.applications.mobilenet_v2.preprocess_input(rgb_data)  # Preprocess the image
-    prediction = model.predict(np.array([rgb_data]))
-    st.write(f'TensorFlow/Keras Prediction (2D): {prediction}')
+        # Use the TensorFlow/Keras model for predictions
+        image_array = np.array(image)  # Normalize pixel values
+        image_array = np.expand_dims(image_array, axis=-1)  # Add a channel dimension
+        rgb_data = np.stack((image_array.reshape(512,512), ) * 3, axis=-1)
+        rgb_data = keras.applications.resnet_v2.preprocess_input(rgb_data)  # Preprocess the image
+        prediction = model.predict(np.array([rgb_data]))
+        
+        # Display the uploaded image and predictions side by side
+        col1, col2 = st.columns(2)
+        col1.image(image, caption='Uploaded Image', width=256)
+        
+        # Display predicted classes and probabilities
+        with col2:
+            st.write("## Labels and their Predicted Probabilities")
+            labels = ['Atelectasis', 'Effusion', 'Infiltration', 'Mass', 'No Finding', 'Nodule']
+            probabilities = [prob[0][0] for prob in prediction]
+
+            # Print probabilities for all labels
+            for label, prob in zip(labels, probabilities):
+                st.write(f"{label}: {prob}")
+
+            # Filter labels with probabilities greater than 0.5
+            predicted_labels = [labels[i] for i, prob in enumerate(probabilities) if prob > 0.5]
+            st.write(f"## Predicted Labels with more than 50% Probability: {str(predicted_labels)}")
+    except:
+        st.write("Error in processing the uploaded image. Please try again with a different image.")
+        
+    finally:
+        st.write("Click the 'X' near the image upload point to clear this image and try another!")
