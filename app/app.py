@@ -6,8 +6,12 @@ import numpy as np
 import keras
 import pandas as pd
 
-# Referred to tutorial by Kaushal Shah
-# Accessed at https://kaushal28.github.io/Building-Multi-Output-CNN-with-Keras/
+im = Image.open("logo.ico")
+st.set_page_config(
+    page_title="ChestMultiVision",
+    page_icon=im
+)
+
 # Refer https://keras.io/api/applications/mobilenet/ for specifics of MobileNetV2.
 
 def create_resnet_model():
@@ -41,13 +45,15 @@ model = create_resnet_model()
 model.load_weights("ResNet50V2_finetuned.weights.h5", skip_mismatch=False)
 
 # Streamlit app
+logo = Image.open("logo.jpg")
 st.title('ChestMultiVision: Chest X-ray MultiLabel Classification App')
 
+st.write("Product Disclaimer: ChestMultiVision is a prototype chest x ray classification app, it is NOT A MEDICAL DEVICE. Predictions made are simply to demonstrate the application and the application is not approved for medical use.")
+    
 # Sidebar for additional model information
 with st.sidebar:
-    st.markdown("<style>h2 {font-size: 16px;}, p {font-size: 10px;}</style>", unsafe_allow_html=True)  # Reduce font size
-    st.markdown("Product Disclaimer: ChestMultiVision is a prototype chest x ray classification app, it is NOT A MEDICAL DEVICE. Predictions made are simply to demonstrate the application and the application is not approved for medical use.")
-    
+    st.image(logo, use_column_width=True)
+    st.markdown("<style>h2 {font-size: 14px;}, p {font-size: 10px;}</style>", unsafe_allow_html=True)  # Reduce font size    
     st.markdown("#### About ChestMultiVision")
     st.markdown("ChestMultiVision harnesses a custom deep learning model based on the ResNet50V2 architecture. It was trained on the Chest X-ray-14 dataset. It predicts six different findings detectable on chest x-rays, that are: Atelectasis, Effusion, Infiltration, Mass, No Finding, and Nodule.")
 
