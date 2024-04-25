@@ -1,15 +1,19 @@
 # Install necessary libraries
+from io import BytesIO
 import streamlit as st
 import tensorflow as tf
 from PIL import Image
 import numpy as np
 import keras
 import pandas as pd
+import requests
 
-im = Image.open("logo.ico")
+logo_icon_url = 'https://raw.githubusercontent.com/Vindhyaa-Saravanan/ChestMultiVision/main/app/logo.ico?token=GHSAT0AAAAAACNZZ2C6AJ46ML6STVPGYLN4ZRKNIQQ'
+response = requests.get(logo_icon_url)
+logo = Image.open(BytesIO(response.content))
 st.set_page_config(
     page_title="ChestMultiVision",
-    page_icon=im
+    page_icon=logo
 )
 
 # Refer https://keras.io/api/applications/mobilenet/ for specifics of MobileNetV2.
@@ -45,14 +49,19 @@ model = create_resnet_model()
 model.load_weights("ResNet50V2_finetuned.weights.h5", skip_mismatch=False)
 
 # Streamlit app
-logo = Image.open("logo.jpg")
+
+# Referred to https://discuss.streamlit.io/t/filenotfounderror-errno-2-no-such-file-or-directory-images-icon-png/36154/3
+logo_picture_url = 'https://raw.githubusercontent.com/Vindhyaa-Saravanan/ChestMultiVision/main/app/logo.jpg?token=GHSAT0AAAAAACNZZ2C7P7NBQNYMKYDOOMJQZRKNMEQ'
+response_picture = requests.get(logo_picture_url)
+picture = Image.open(BytesIO(response_picture.content))
+
 st.title('ChestMultiVision: Chest X-ray MultiLabel Classification App')
 
 st.write("Product Disclaimer: ChestMultiVision is a prototype chest x ray classification app, it is NOT A MEDICAL DEVICE. Predictions made are simply to demonstrate the application and the application is not approved for medical use.")
     
 # Sidebar for additional model information
 with st.sidebar:
-    st.image(logo, use_column_width=True)
+    st.image(picture, use_column_width=True)
     st.markdown("<style>h2 {font-size: 14px;}, p {font-size: 10px;}</style>", unsafe_allow_html=True)  # Reduce font size    
     st.markdown("#### About ChestMultiVision")
     st.markdown("ChestMultiVision harnesses a custom deep learning model based on the ResNet50V2 architecture. It was trained on the Chest X-ray-14 dataset. It predicts six different findings detectable on chest x-rays, that are: Atelectasis, Effusion, Infiltration, Mass, No Finding, and Nodule.")
