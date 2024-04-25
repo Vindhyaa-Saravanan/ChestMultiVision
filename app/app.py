@@ -1,5 +1,6 @@
 # Install necessary libraries
 from io import BytesIO
+from pathlib import Path
 import streamlit as st
 import tensorflow as tf
 from PIL import Image
@@ -10,7 +11,9 @@ import requests
 
 logo_icon_url = 'https://raw.githubusercontent.com/Vindhyaa-Saravanan/ChestMultiVision/main/app/logo.ico?token=GHSAT0AAAAAACNZZ2C6AJ46ML6STVPGYLN4ZRKNIQQ'
 response = requests.get(logo_icon_url)
-logo = Image.open(BytesIO(response.content))
+#logo = Image.open(BytesIO(response.content))
+path = Path(__file__).parent / "logo.ico"
+logo = Image.open(path)
 st.set_page_config(
     page_title="ChestMultiVision",
     page_icon=logo
@@ -46,7 +49,8 @@ def create_resnet_model():
 
 # Load the saved TensorFlow/Keras model for 2D data
 model = create_resnet_model()
-model.load_weights("ResNet50V2_finetuned.weights.h5", skip_mismatch=False)
+path = Path(__file__).parent / "ResNet50V2_finetuned.weights.h5"
+model.load_weights(path, skip_mismatch=False)
 
 # Streamlit app
 
