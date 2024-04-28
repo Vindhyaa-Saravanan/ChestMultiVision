@@ -121,7 +121,7 @@ To get a local copy up and running follow these simple steps:
 
 ### Cloning the repository
 
-1. When cloning this whole repository, which has several large files such as the models, etc which will need to be tracked by Git LFS, make sure to set up Git LFS by:
+1. When cloning this whole repository, which has large files such as the models, etc which will need to be tracked by Git LFS, make sure to set up Git LFS by:
 
 ```bash
 > git lfs install
@@ -188,10 +188,6 @@ The `.gitattributes` file will make sure the appropriate files are cloned.
 ## Contact
 
 Vindhyaa Saravanan: sc21vs@leeds.ac.uk
-
-Link to project repository: [Project Link](https://github.com/uol-feps-soc-comp3931-2324-classroom/final-year-project-Vindhyaa-Saravanan)
-
-Link to project wiki: [Project Wiki](https://github.com/uol-feps-soc-comp3931-2324-classroom/final-year-project-Vindhyaa-Saravanan/wiki)
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments

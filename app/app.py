@@ -61,7 +61,7 @@ picture = Image.open(BytesIO(response_picture.content))
 
 st.title('ChestMultiVision: Chest X-ray MultiLabel Classification App')
 
-st.write("Product Disclaimer: ChestMultiVision is a prototype chest x ray classification app, it is NOT A MEDICAL DEVICE. Predictions made are simply to demonstrate the application and the application is not approved for medical use.")
+st.write("Product Disclaimer: ChestMultiVision is a prototype chest x ray classification app, it is NOT A MEDICAL DEVICE. Predictions made are simply to demonstrate the application. Predictions are not expected to be highly accurate and should not be used for medical diagnosis of any kind. Predictions may not be as effective on chest x-rays of women, children and elderly adults. Please consult a medical professional for any medical advice or diagnosis")
     
 # Sidebar for additional model information
 with st.sidebar:
