@@ -9,9 +9,6 @@ import keras
 import pandas as pd
 import requests
 
-logo_icon_url = 'https://raw.githubusercontent.com/Vindhyaa-Saravanan/ChestMultiVision/main/app/logo.ico?token=GHSAT0AAAAAACNZZ2C6AJ46ML6STVPGYLN4ZRKNIQQ'
-response = requests.get(logo_icon_url)
-#logo = Image.open(BytesIO(response.content))
 path = Path(__file__).parent / "logo.ico"
 logo = Image.open(path)
 st.set_page_config(
@@ -53,11 +50,8 @@ path = Path(__file__).parent / "ResNet50V2_finetuned.weights.h5"
 model.load_weights(path, skip_mismatch=False)
 
 # Streamlit app
-
-# Referred to https://discuss.streamlit.io/t/filenotfounderror-errno-2-no-such-file-or-directory-images-icon-png/36154/3
-logo_picture_url = 'https://raw.githubusercontent.com/Vindhyaa-Saravanan/ChestMultiVision/main/app/logo.jpg?token=GHSAT0AAAAAACNZZ2C7P7NBQNYMKYDOOMJQZRKNMEQ'
-response_picture = requests.get(logo_picture_url)
-picture = Image.open(BytesIO(response_picture.content))
+picture_path = Path(__file__).parent / "logo.jpg"
+picture = Image.open(picture_path)
 
 st.title('ChestMultiVision: Chest X-ray MultiLabel Classification App')
 

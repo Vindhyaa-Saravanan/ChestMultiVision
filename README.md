@@ -90,8 +90,6 @@ SOFTWARE.-->
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 My dissertation project focuses on addressing a critical challenge in the realm of medical imaging: the accurate detection of multiple findings in chest X-rays through deep learning-based multi-label classification. Existing CAD systems often struggle to effectively handle cases where multiple pathologies coexist within a single image, presenting a substantial obstacle for practical clinical use. My project seeks to bridge this gap by developing deep learning models capable of accurately classifying chest X-ray images with multiple overlapping labels.
 
 Training with the NIH Chest X-ray-14 dataset, I aim to train and evaluate deep learning neural networks tailored to multi-label classification tasks. I also aim to investigate effect of training the model on various different subsets of data and labels, to compare model performance across training datasets in a data ablation study. The project will culminate in a user-friendly web application for clinicians, with an intuitive interface to upload chest X-ray images and receive rapid, accurate diagnostic predictions.
@@ -204,8 +202,6 @@ I am equally grateful to my parents for their unwavering support, understanding,
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
-[product-screenshot]: images/screenshot.png
 
 [Python.com]: https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54
 [Python-url]: https://python.org
