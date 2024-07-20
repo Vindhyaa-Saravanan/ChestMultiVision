@@ -48,8 +48,8 @@ SOFTWARE.-->
   <p align="center">
     Leveraging deep learning neural networks for multi-label classification of medical images, enabling early detection of multiple findings in chest X-rays.
 
-    ChestMultiVision harnesses a custom deep learning model based on the ResNet50V2 architecture. It was trained on the Chest X-ray-14 dataset. It predicts six different findings detectable on chest x-rays, that are: Atelectasis, Effusion, Infiltration, Mass, No Finding, and Nodule.
-
+ChestMultiVision harnesses a custom deep learning model based on the ResNet50V2 architecture. It was trained on the Chest X-ray-14 dataset. It predicts six different findings detectable on chest x-rays, that are: Atelectasis, Effusion, Infiltration, Mass, No Finding, and Nodule.
+    
 Product Disclaimer: ChestMultiVision is a prototype chest x ray classification app, it is NOT A MEDICAL DEVICE. Predictions made are simply to demonstrate the application. Predictions are not expected to be highly accurate and should not be used for medical diagnosis of any kind. Predictions may not be as effective on chest x-rays of women, children and elderly adults. Please consult a medical professional for any medical advice or diagnosis
     <br />
     <a href="https://github.com/Vindhyaa-Saravanan/final-year-project-Vindhyaa-Saravanan"><strong>Explore the docs »</strong></a>
